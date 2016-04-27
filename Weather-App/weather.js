@@ -17,7 +17,7 @@ $(document).ready(function(){
     // });
     $.getJSON(website+city+cityAppend+apiID+id, function(data){
       currTemp = data.main.temp;
-      $('#display-weather').html(fahrenheit(currTemp));
+      $('#display-weather').html("<strong>" + fahrenheit(currTemp) + "</strong>");
     });
   });
   
