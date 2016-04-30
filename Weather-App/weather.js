@@ -51,9 +51,17 @@ function fahrenheit(tempInKelvin){
 //capitalizes the first letter of the name
 function correctName(name){
   if(name !== null && name.length > 0){
-    var firstLetter = name.charAt(0).toUpperCase();
-    var restLetters = name.substring(1, name.length);
-    return firstLetter + restLetters;
+    //Updated for names with multiple words
+    //Splits name up into an array based on spacing
+    var nameArray = name.split(" ");
+    //Loops through the array and capitalizes the first letter in each word of the name
+    for(var index = 0; index < nameArray.length; index++){
+      var currString = nameArray[index];
+      var firstLetter = currString.charAt(0).toUpperCase();
+      var restLetters = currString.substring(1, currString.length);
+      nameArray[index] = firstLetter + restLetters;
+    }
+    return nameArray.join(" ");
   } else {
     return name;
   }
