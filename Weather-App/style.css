@@ -1,5 +1,10 @@
+body{
+  background:grey;
+}
 #display-weather{ 
   padding-top: 50px;
   font-family: 'Poiret One';
   font-size: 50px;
+  color:white;
 }
+
