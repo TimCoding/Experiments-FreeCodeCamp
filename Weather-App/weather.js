@@ -13,35 +13,23 @@
       icons.play();
 //javascript for weather icons ends
 
-
+var currTemp;
 
 
 $(document).ready(function(){
-  var currTemp;
+  //This will search weather if Get Weather is clicked
   $('#button-weather').click(function(event){
     event.preventDefault();
-    var website = "http://api.openweathermap.org/data/2.5/weather?q=";
-    //API only accepts lower case input so...
-    //Will use toLowerCase();
-    var city = $('#weather-search').val().toLowerCase();
-    var cityAppend = "?";
-    var apiID = "id=524901&APPID=";
-    var id = "091cd4a66afe76205aca39cc41f07de1";
- 
-   
-    $.getJSON(website+city+cityAppend+apiID+id, function(data){
-      currTemp = data.main.temp;
-      var conditions = data.weather[0].main;
-      
-      
-      //City name display
-      $('#city').html("<div class = 'text-center' <h1>" + correctName(city) + "</h1></div>");
-      //Temperature display based on query
-      $('#temp').html("<div class = 'text-center' <h1>" + fahrenheit(currTemp) + "</h1></div>");
-      //Current Weather Condition
-      $('#conditions').html("<div class ='text-center' <h1>" + conditions + "</h1></div>");
-    });
+    executeWeatherSearch();
   });
+  //This will search if you press enter in the input bar
+  $('#weather-search').keypress(function(e){
+    if(e.which == 13){
+      executeWeatherSearch();
+      return false;
+    }
+  });
+  
   
   //Convert between fahrenheit and celsius
   $('#fahrenheit').click(function(){
@@ -80,4 +68,28 @@ function correctName(name){
   } else {
     return name;
   }
+}
+
+function executeWeatherSearch(){
+  var website = "http://api.openweathermap.org/data/2.5/weather?q=";
+    //API only accepts lower case input so...
+    //Will use toLowerCase();
+    var city = $('#weather-search').val().toLowerCase();
+    var cityAppend = "?";
+    var apiID = "id=524901&APPID=";
+    var id = "091cd4a66afe76205aca39cc41f07de1";
+ 
+   
+    $.getJSON(website+city+cityAppend+apiID+id, function(data){
+      currTemp = data.main.temp;
+      var conditions = data.weather[0].main;
+      
+      
+      //City name display
+      $('#city').html("<div class = 'text-center' <h1>" + correctName(city) + "</h1></div>");
+      //Temperature display based on query
+      $('#temp').html("<div class = 'text-center' <h1>" + fahrenheit(currTemp) + "</h1></div>");
+      //Current Weather Condition
+      $('#conditions').html("<div class ='text-center' <h1>" + conditions + "</h1></div>");
+    });
 }
