@@ -1,17 +1,3 @@
-//javascript for icons
- var icons = new Skycons({"color":"rgba(0, 0, 0)"}),
-          list  = [
-            "clear-day", "clear-night", "partly-cloudy-day",
-            "partly-cloudy-night", "cloudy", "rain", "sleet", "snow", "wind",
-            "fog"
-          ],
-          i;
-
-      for(i = list.length; i--; ){
-        icons.set(list[i], list[i]);
-      }
-      icons.play();
-//javascript for weather icons ends
 
 var currTemp;
 
@@ -83,13 +69,72 @@ function executeWeatherSearch(){
     $.getJSON(website+city+cityAppend+apiID+id, function(data){
       currTemp = data.main.temp;
       var conditions = data.weather[0].main;
-      
-      
+      //javascript for weather icon, getting weather type
+      var weatherName = weatherIcon(data.weather[0].icon);
       //City name display
       $('#city').html("<div class = 'text-center' <h1>" + correctName(city) + "</h1></div>");
       //Temperature display based on query
       $('#temp').html("<div class = 'text-center' <h1>" + fahrenheit(currTemp) + "</h1></div>");
       //Current Weather Condition
       $('#conditions').html("<div class ='text-center' <h1>" + conditions + "</h1></div>");
+      //Weather icon
+      $('#icon').html("<canvas id = " + weatherName + " height = '45' width = '45'></canvas>");
+      //javascript for icons
+      var icons = new Skycons({"color":"rgba(255, 255, 255, 1)"}),
+          list  = [
+            "clear-day", "clear-night", "partly-cloudy-day",
+            "partly-cloudy-night", "cloudy", "rain", "sleet", "snow", "wind",
+            "fog"
+          ],
+          i;
+
+      for(i = list.length; i--; ){
+        icons.set(list[i], list[i]);
+      }
+      icons.play();
+      //javascript for weather icons ends
+      
     });
+}
+
+function weatherIcon(type){
+  var weatherName; 
+  switch(type){
+    case "01d":
+      weatherName = "clear-day";
+      break;
+    case "01n":
+      weatherName = "clear-night";
+      break;
+    case "02d":
+    case "03d":
+      weatherName = "partly-cloudy-day";
+      break;
+    case "02n":
+    case "03n":
+      weatherName = "partly-cloudy-night";
+      break;
+    case "04d":
+    case "04n":
+      weatherName = "cloudy";
+      break;
+    case "09d":
+    case "09n":
+    case "10d":
+    case "10n":
+      weatherName = "rain";
+      break;
+    case "013d":
+    case "013n":
+      weatherName = "snow";
+      break;
+    case "50d":
+    case "50n":
+      weatherName = "fog";
+      break;
+    default:
+      weatherName = "cloudy";
+  }
+  alert(weatherName);
+  return weatherName;
 }
