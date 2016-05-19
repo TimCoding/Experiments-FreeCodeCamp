@@ -3,20 +3,30 @@ var currTemp;
 
 
 $(document).ready(function(){
+  //Automatically display user's data
+  userWeather();
   //This will search weather if Get Weather is clicked
   $('#button-weather').click(function(event){
     event.preventDefault();
-    executeWeatherSearch();
+    var city = $('#weather-search').val().toLowerCase();
+    if(city === ""){
+      alert("Please insert a city name");
+    } else {
+      executeWeatherSearch(city);
+    }
   });
   //This will search if you press enter in the input bar
   $('#weather-search').keypress(function(e){
     if(e.which == 13){
-      executeWeatherSearch();
+      var city = $('#weather-search').val().toLowerCase();
+      if(city === ""){
+      alert("Please insert a city name");
+      } else {
+      executeWeatherSearch(city);
+      }
       return false;
     }
   });
-  
-  
   //Convert between fahrenheit and celsius
   $('#fahrenheit').click(function(){
     $('#temp').html("<div class = 'text-center' <h1>" + fahrenheit(currTemp) + "</h1></div>");
@@ -56,11 +66,11 @@ function correctName(name){
   }
 }
 
-function executeWeatherSearch(){
+function executeWeatherSearch(city){
   var website = "http://api.openweathermap.org/data/2.5/weather?q=";
     //API only accepts lower case input so...
     //Will use toLowerCase();
-    var city = $('#weather-search').val().toLowerCase();
+    //var city = $('#weather-search').val().toLowerCase();
     var cityAppend = "?";
     var apiID = "id=524901&APPID=";
     var id = "091cd4a66afe76205aca39cc41f07de1";
@@ -79,7 +89,27 @@ function executeWeatherSearch(){
       $('#conditions').html("<div class ='text-center' <h1>" + conditions + "</h1></div>");
       //Weather icon
       $('#icon').html("<canvas id = " + weatherName + " height = '45' width = '45'></canvas>");
-      //javascript for icons
+      
+     //Create weather icons
+      createWeatherIcon();
+      
+    });
+}
+
+//Get user's current weather 
+function userWeather(){
+ 
+  $.getJSON('http://ipinfo.io', function(info){
+    //alert(info.city);
+    var city = info.city;
+    executeWeatherSearch(city);
+  });
+  
+}
+
+//Create the weather icons to be displayed
+function createWeatherIcon(){
+  //javascript for icons
       var icons = new Skycons({"color":"rgba(255, 255, 255, 1)"}),
           list  = [
             "clear-day", "clear-night", "partly-cloudy-day",
@@ -92,11 +122,9 @@ function executeWeatherSearch(){
         icons.set(list[i], list[i]);
       }
       icons.play();
-      //javascript for weather icons ends
-      
-    });
 }
 
+//Switch cases to determine what kind of weather icon should be placed on the page 
 function weatherIcon(type){
   var weatherName; 
   switch(type){
@@ -135,6 +163,6 @@ function weatherIcon(type){
     default:
       weatherName = "cloudy";
   }
-  alert(weatherName);
   return weatherName;
 }
+
