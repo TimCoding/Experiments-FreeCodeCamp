@@ -1,10 +1,17 @@
 body{
   background:grey;
 }
-#display-weather{ 
+
+#forecast, #display-weather{ 
   padding-top: 50px;
   font-family: 'Poiret One';
   font-size: 50px;
   color:white;
 }
+
+#forecast{
+  margin-top: 25px;
+  font-size: 25px;
+}
+
 
