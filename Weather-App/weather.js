@@ -8,7 +8,7 @@ $(document).ready(function(){
   //This will search weather if Get Weather is clicked
   $('#button-weather').click(function(event){
     event.preventDefault();
-    var city = $('#weather-search').val().toLowerCase();
+    var city = $('#weather-search').val();
     if(city === ""){
       alert("Please insert a city name");
     } else {
@@ -18,7 +18,7 @@ $(document).ready(function(){
   //This will search if you press enter in the input bar
   $('#weather-search').keypress(function(e){
     if(e.which == 13){
-      var city = $('#weather-search').val().toLowerCase();
+      var city = $('#weather-search').val();
       if(city === ""){
       alert("Please insert a city name");
       } else {
@@ -71,6 +71,7 @@ function executeWeatherSearch(city){
     //API only accepts lower case input so...
     //Will use toLowerCase();
     //var city = $('#weather-search').val().toLowerCase();
+  city = city.toLowerCase();
     var cityAppend = "?";
     var apiID = "id=524901&APPID=";
     var id = "091cd4a66afe76205aca39cc41f07de1";
@@ -165,4 +166,7 @@ function weatherIcon(type){
   }
   return weatherName;
 }
+
+
+
 
