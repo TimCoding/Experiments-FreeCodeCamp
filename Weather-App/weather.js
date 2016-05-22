@@ -1,4 +1,4 @@
-
+var icons = new Skycons({"color": "rgba(255,255,255, 1)"});
 var currTemp;
 
 
@@ -88,10 +88,12 @@ function executeWeatherSearch(city){
       $('#temp').html("<div class = 'text-center' <h1>" + fahrenheit(currTemp) + "</h1></div>");
       //Current Weather Condition
       $('#conditions').html("<div class ='text-center' <h1>" + conditions + "</h1></div>");
+      
+      $('#icon').html("<canvas id = 'mainIcon' height = '45' width = '45'></canvas>");
+      //Set weather icon for main weather icon 
       //Weather icon
-      $('#icon').html("<canvas id = " + weatherName + " height = '45' width = '45'></canvas>");
-      createWeatherIcon();
-     //Create weather icons
+      icons.add("mainIcon", weatherName);
+      icons.play();
       weatherPredict(city);
      
       
@@ -133,10 +135,12 @@ function displayForecast(date, min, max, icon, index){
   $(dayID).html(day);
   var iconType = weatherIcon(icon);
   var dayIconID = "#icon" + index;
+  var canvasID = "" + index;
   //alert(dayIconID);
-  alert(iconType);
-  $(dayIconID).html("<canvas id= " + iconType + " height ='25' width ='25'></canvas>");
-  createWeatherIcon();
+  //alert(iconType);
+  $(dayIconID).html("<canvas id= " + canvasID + " height ='25' width ='25'></canvas>");
+  icons.set(canvasID, iconType);
+  icons.play();
 }
 
 function assignDays(day){
@@ -154,22 +158,6 @@ function userWeather(){
   
 }
 
-//Create the weather icons to be displayed
-function createWeatherIcon(){
-  //javascript for icons
-      var icons = new Skycons({"color":"rgba(255, 255, 255, 1)"}),
-          list  = [
-            "clear-day", "clear-night", "partly-cloudy-day",
-            "partly-cloudy-night", "cloudy", "rain", "sleet", "snow", "wind",
-            "fog"
-          ],
-          i;
-
-      for(i = list.length; i--; ){
-        icons.set(list[i], list[i]);
-      }
-      icons.play();
-}
 
 //Switch cases to determine what kind of weather icon should be placed on the page 
 function weatherIcon(type){
