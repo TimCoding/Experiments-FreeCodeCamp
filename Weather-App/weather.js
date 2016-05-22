@@ -67,11 +67,11 @@ function correctName(name){
 }
 
 function executeWeatherSearch(city){
-  var website = "http://api.openweathermap.org/data/2.5/weather?q=";
+    var website = "http://api.openweathermap.org/data/2.5/weather?q=";
     //API only accepts lower case input so...
     //Will use toLowerCase();
     //var city = $('#weather-search').val().toLowerCase();
-  city = city.toLowerCase();
+    city = city.toLowerCase();
     var cityAppend = "?";
     var apiID = "id=524901&APPID=";
     var id = "091cd4a66afe76205aca39cc41f07de1";
@@ -90,16 +90,62 @@ function executeWeatherSearch(city){
       $('#conditions').html("<div class ='text-center' <h1>" + conditions + "</h1></div>");
       //Weather icon
       $('#icon').html("<canvas id = " + weatherName + " height = '45' width = '45'></canvas>");
-      
-     //Create weather icons
       createWeatherIcon();
+     //Create weather icons
+      weatherPredict(city);
+     
       
     });
+    
 }
 
+function weatherPredict(city){
+  city.toLowerCase();
+  $.getJSON("http://api.openweathermap.org/data/2.5/forecast/daily?q=" + city + "&mode=JSON&units=customary&cnt=5&appid=091cd4a66afe76205aca39cc41f07de1", function(forecast){
+    //alert(forecast.list[0].dt);
+    var listForecast = forecast.list;
+    for(var i = 0; i < listForecast.length; i++){
+      //alert(forecast.list[i].dt);
+      //minimum temperature for the day in Kelvin
+      //alert(forecast.list[i].temp.min);
+      //maximum temperature for the day in Kelvin
+      //alert(forecast.list[i].temp.max);
+      //Weather icon
+      //alert(forecast.list[i].weather[0].icon);
+      displayForecast(forecast.list[i].dt, forecast.list[i].temp.min, forecast.list[i].temp.max, forecast.list[i].weather[0].icon, i + 1);
+    }
+  });
+}
+
+function displayForecast(date, min, max, icon, index){
+  
+  //ID table grid to put in for day
+  var dayID = "#day" + index;
+  //ID Table grid for weather
+  var dayWeatherID = dayID + 'W';
+  //average max and min
+  var average = (min + max) / 2; 
+  var temp = fahrenheit(average);
+  $(dayWeatherID).html(temp);
+  var date = new Date(date * 1000);
+  var day = assignDays(date.getDay());
+  
+  $(dayID).html(day);
+  var iconType = weatherIcon(icon);
+  var dayIconID = "#icon" + index;
+  //alert(dayIconID);
+  alert(iconType);
+  $(dayIconID).html("<canvas id= " + iconType + " height ='25' width ='25'></canvas>");
+  createWeatherIcon();
+}
+
+function assignDays(day){
+  var days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+  return days[day];
+}
 //Get user's current weather 
 function userWeather(){
- 
+  //Thanks to ipinfo for the API 
   $.getJSON('http://ipinfo.io', function(info){
     //alert(info.city);
     var city = info.city;
@@ -166,6 +212,7 @@ function weatherIcon(type){
   }
   return weatherName;
 }
+
 
 
 
