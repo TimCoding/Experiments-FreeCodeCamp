@@ -1,5 +1,6 @@
 var icons = new Skycons({"color": "rgba(255,255,255, 1)"});
 var currTemp;
+var temps = [0,0,0,0,0,0];
 
 
 $(document).ready(function(){
@@ -29,11 +30,22 @@ $(document).ready(function(){
   });
   //Convert between fahrenheit and celsius
   $('#fahrenheit').click(function(){
-    $('#temp').html("<div class = 'text-center' <h1>" + fahrenheit(currTemp) + "</h1></div>");
+    $('#temp').html("<div class = 'text-center' <h1>" + fahrenheit(temps[0]) + "</h1></div>");
+   $('#day1W').html(fahrenheit(temps[1]));
+    $('#day2W').html(fahrenheit(temps[2]));
+    $('#day3W').html(fahrenheit(temps[3]));
+    $('#day4W').html(fahrenheit(temps[4]));
+    $('#day5W').html(fahrenheit(temps[5]));
   });
   
   $('#celsius').click(function(){
-    $('#temp').html("<div class = 'text-center' <h1>" + celsius(currTemp) + "</h1></div>");
+    $('#temp').html(celsius(temps[0]));
+    $('#day1W').html(celsius(temps[1]));
+    $('#day2W').html(celsius(temps[2]));
+    $('#day3W').html(celsius(temps[3]));
+    $('#day4W').html(celsius(temps[4]));
+    $('#day5W').html(celsius(temps[5]));
+    
   });
 });
 
@@ -78,14 +90,14 @@ function executeWeatherSearch(city){
  
    
     $.getJSON(website+city+cityAppend+apiID+id, function(data){
-      currTemp = data.main.temp;
+      temps[0] = data.main.temp;
       var conditions = data.weather[0].main;
       //javascript for weather icon, getting weather type
       var weatherName = weatherIcon(data.weather[0].icon);
       //City name display
       $('#city').html("<div class = 'text-center' <h1>" + correctName(city) + "</h1></div>");
       //Temperature display based on query
-      $('#temp').html("<div class = 'text-center' <h1>" + fahrenheit(currTemp) + "</h1></div>");
+      $('#temp').html("<div class = 'text-center' <h1>" + fahrenheit(temps[0]) + "</h1></div>");
       //Current Weather Condition
       $('#conditions').html("<div class ='text-center' <h1>" + conditions + "</h1></div>");
       
@@ -95,8 +107,6 @@ function executeWeatherSearch(city){
       icons.add("mainIcon", weatherName);
       icons.play();
       weatherPredict(city);
-     
-      
     });
     
 }
@@ -128,6 +138,7 @@ function displayForecast(date, min, max, icon, index){
   //average max and min
   var average = (min + max) / 2; 
   var temp = fahrenheit(average);
+  temps[index] = average;
   $(dayWeatherID).html(temp);
   var date = new Date(date * 1000);
   var day = assignDays(date.getDay());
@@ -200,8 +211,5 @@ function weatherIcon(type){
   }
   return weatherName;
 }
-
-
-
 
 
