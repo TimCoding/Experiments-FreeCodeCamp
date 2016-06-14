@@ -1,0 +1,19 @@
+#search {
+  width: 100px;
+  margin: 0 auto;
+}
+
+input[type = text] {
+  background: #ededed url(http://static.tumblr.com/ftv85bp/MIXmud4tx/search-icon.png) no-repeat 17px center;
+  width: 25px;
+  padding: 25px;
+  border-radius: 75px;
+  transition: 1.5s;
+}
+
+input[type = text]:focus {
+  width: 350px;
+  transform: translate(-175px, 0px);
+  border-radius: 35px;
+  padding-left: 45px;
+}
